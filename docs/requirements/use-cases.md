@@ -4919,3 +4919,73 @@ File names include document type and team identifier.
 **Related Use Cases:** UC-AI-critique: Request a critique from the critique assistant; UC-AI-consult-project-assistant: Consult the project assistant; UC-CFG-configure-review-criteria: Configure the cross-document review criteria for a course section; UC-VAL-run-validation: Run validation (ReqLint) on the current document; UC-AI-review-proposal: Review and accept or reject an assistant proposal; UC-DOC-edit-document: Edit a section-based requirement document; UC-DOC-edit-use-case: Edit a use case.
 **Assumptions:**
 **Open Issues:**
+
+### **UC-STU-nudge-non-submitted-students: The instructor can view and nudge all students who have not submitted an assignment**
+
+**UC ID and Name:** UC-STU-nudge-non-submitted-students: View and send a reminder to students who have not submitted an assignment.
+**Created By:**
+Griffin Kuchar
+**Date Created:**
+October 1st, 2026
+**Primary Actor:** instructor
+**Secondary Actors:** student
+**Trigger:** The instructor indicates to view all students who have not submitted an assignment for that active week.
+**Description:** The instructor wants to see and notify all students who have not submitted an assignment for that active week, so that assignment completion rates increase for this instructor's course.
+
+**Preconditions:**
+- PRE-1. The instructor is logged into the system.
+- PRE-2. The instructor is assigned to a course section.
+- PRE-3. There is an assignment for that course section for an active week.
+
+**Postconditions:**
+- POST-1. The system attempts to send an email to all students in the list of students who have not submitted the assignment for that active week notifying them that they have not completed the assignment.
+- POST-2. The system records a notification email was attempted at the given point in time for that assignment for that active week.
+
+**Main Success Scenario:**
+1. The instructor indicates to view all students who have not submitted a particular assignment for that active week.
+2. The system shows a list of all students who have not submitted that particular assignment for that active week at that point in time.
+3. The instructor indicates to notify all students in the list.
+4. The system attempts to send an email to all students in the list, notifying them that they have not submitted that particular assignment for that active week and reminds them of that particular assignment's deadline.
+5. Use case ends.
+
+**Extensions:**
+- **2a. The assignment's week is not the section's active week**:
+  - 2a1. The system does not allow the instructor to notify all students in the list (BR-assignment-not-submitted).
+  - 2a2. Use case ends.
+- **2b. There are no students that have not submitted a particular assignment (or there are no students in the course)**:
+  - 2b1. The system does not allow the instructor to notify all students in the list.
+  - 2b2. Use case ends.
+- **2c. The peer evaluation's one-week submission window has closed**:
+  - 2c1. The system does not allow the instructor to notify all students in the list (BR-evaluation-submission-window).
+  - 2c2. Use case ends.
+- **2d. A student submitted, then unsubmitted, so they are on the list of unsubmitted students**:
+  - 2d1. The system allows the instructor to notify all students in the list, including the student who submitted then unsubmitted (BR-assignment-not-submitted).
+  - 2d2. Returns to step 3 of the main success scenario.
+- **2e. A student who is not assigned a team has not submitted the particular assignment**:
+  - 2e1. The student will not show up on the not submitted list of the particular assignment (BR-assignment-not-submitted)
+  - 2e2. The instructor is not notified that the student is not on a team.
+  - 2e3. Returns to step 3 of the main success scenario.
+- **3a. The instructor attempts to notify a particular assignment above its rate limit**:
+  - 3a1. The recorded count of the notifications sent for this assignment in this section is equal to the rate limit (BR-assignment-rate-limit).
+  - 3a2. The system does not allow the instructor to notify all students in the list.
+  - 3a3. The system indicates to the instructor that the rate limit has been hit for this assignment, the notification was not sent, and the time when the rate limit will allow for a notification to be sent again.
+  - 3a4. Use case ends.
+- **4a. Email service rejects the address of a student**:
+  - 4a1. The system continues with the remaining addresses rather than abandoning the batch, so that a single undeliverable address does not cost the other students their notification.
+  - 4a2. The system reports to the instructor which addresses it could not email, so that she can notify them herself if desired.
+  - 4a3. Use case ends.
+
+**Priority:** Medium
+**Frequency of Use:** Approximately 5 instructors, 1 to 2 usages per week.
+**Business Rules:** BR-team-assignment-required, BR-active-weeks, BR-assignment-not-submitted, BR-section-scoped-access, BR-evaluation-submission-window, BR-assignment-rate-limit, CO-ferpa
+
+**Associated Information:**
+- Non-submitter list display: for each student, show first name, last name, email. Sort by last name. The list shows submission status only, never the content of any submission (CO-ferpa).
+- Default reminder email: *Subject: Project Pulse Reminder: [assignment] due [deadline] Hello [first name], our records show you have not yet submitted your [assignment] for the week of [week]. It is due [deadline]. Please submit it in Project Pulse. This email is not monitored, so do not reply directly to this message. Best regards, Project Pulse Team*
+- [week] is shown as a date range (for example, "Sep 28 – Oct 4, 2026"), not as an internal week identifier.
+- If the email service is unavailable for the entire send: the nudge is not recorded under POST-2, so it does not count toward BR-assignment-rate-limit.
+- The instructor shall be able to cancel the use case at any time before confirming the send.
+**Assumptions:**
+- The unsubmitted list is fixed at step 2; a student who submits between steps 2 and 4 is still notified.
+**Open Issues:**
+- Ambiguity on which week a peer evaluation view and notify refers to.
