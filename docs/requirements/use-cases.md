@@ -4982,6 +4982,7 @@ October 1st, 2026
 **Associated Information:**
 - Non-submitter list display: for each student, show first name, last name, email. Sort by last name. The list shows submission status only, never the content of any submission (CO-ferpa).
 - Default reminder email: *Subject: Project Pulse Reminder: [assignment] due [deadline] Hello [first name], our records show you have not yet submitted your [assignment] for the week of [week]. It is due [deadline]. Please submit it in Project Pulse. This email is not monitored, so do not reply directly to this message. Best regards, Project Pulse Team*
+- [week] is shown as a date range (for example, "Sep 28 – Oct 4, 2026"), not as an internal week identifier.
 - If the email service is unavailable for the entire send: the nudge is not recorded under POST-2, so it does not count toward BR-assignment-rate-limit.
 - The instructor shall be able to cancel the use case at any time before confirming the send.
 **Assumptions:**
