@@ -98,6 +98,10 @@ The artifact types named here are the canonical `RequirementArtifactType` set (g
 - **BR-review-lock:** On submission for review, a requirement document is locked for review and becomes read-only to all students on the team until an instructor returns it for revision.
 - **BR-review-authority:** Only an instructor assigned to the course section may review, accept, or return that team's submitted documents; returning a document for revision unlocks it for student editing.
 
+- **BR-assignment-not-submitted:** An assignment is a weekly activity report or a peer evaluation. Non-submitted means a student, assigned to a team (BR-team-assignment-required), who has not submitted this assignment for this active week (BR-active-weeks) at this exact point in time. Not submitted is independent per assignment. You can be not submitted for either, both, or neither of the assignments. Non-submitted for WAR means 0 activities submitted. Non-submitted for eval means evals have not been sent to any teammate since evals are submitted for all teammates at once. All students assigned to a team are reset to non-submitters for both assignments per active week.
+
+- **BR-assignment-rate-limit:** The instructor cannot notify an assignment's list of non-submitted students (BR-assignment-not-submitted) more than two times in 24 hours, per section, per assignment, per active week.
+
 # **AI Assistants**
 
 - **BR-assistant-enablement:** An AI assistant is available to a course section's students only while the instructor has enabled it for that course section. The drafting assistant is disabled by default.
